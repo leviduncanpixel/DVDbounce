@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>DVD</title>
+	<meta lang="en">
+</head>
+<body style="background: gray">
+	<canvas style="margin: auto; width: 1280px; height: 720px;" id="canvas"></canvas>
+	<script defer>
+        const canvas = document.querySelector("#canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+
+        let pause = false
+
+        let rand_color = () => {
+            const arr = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
+	        let str = "#";
+	        for (let i = 0; i < 6; ++i) {
+	            str += arr[Math.floor((Math.random()*arr.length))];
+	        }
+	        return str;
+        }
+
+        let square = {
+            x_pos: (canvas.width - 50) / 2.0,
+            y_pos: (canvas.height - 50) / 2.0,
+            width: 50,
+            height: 50,
+            x_velocity: (Math.random() * 2) - 1,
+            y_velocity: (Math.random() * 2) - 1,
+            color: rand_color()
+        };
+
+        document.addEventListener("keydown", ev => {
+            if (ev.key === " ") {
+                pause = !pause
+            }
+        })
+
+        document.addEventListener("mousedown", () => {
+            pause = !pause
+        })
+
+        setInterval(() => {
+            if (pause) return;
+
+            ctx.fillStyle = "white";
+	        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (square.x_pos <= 0 || square.x_pos + square.width >= canvas.width) {
+                square.color = rand_color();
+                square.x_velocity *= -1;
+            }
+            if (square.y_pos <= 0 || square.y_pos + square.height >= canvas.height) {
+                square.color = rand_color();
+                square.y_velocity *= -1;
+            }
+
+            ctx.fillStyle = square.color;
+            ctx.fillRect(square.x_pos, square.y_pos, square.width, square.height);
+
+            square.x_pos += square.x_velocity;
+            square.y_pos += square.y_velocity;
+        }, 1000/60);
+	</script>
+</body>
+</html>
