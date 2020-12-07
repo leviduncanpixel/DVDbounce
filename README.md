@@ -1,4 +1,4 @@
-# DRshowcase
+# DVDbounce
 
 ## An easy example project of a "DVD screensaver"
 
